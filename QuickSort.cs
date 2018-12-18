@@ -1,6 +1,6 @@
 #region MIT License
 
-// Copyright (c) 2018-2022 QickSort - Daniel Baumert
+// Copyright (c) 2018-2022 QuickSort - Daniel Baumert
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
