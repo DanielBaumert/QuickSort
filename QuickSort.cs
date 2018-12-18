@@ -23,6 +23,9 @@
 
 #endregion 
 
+ [MethodImpl(MethodImplOptions.AggressiveInlining)]
+ public static void QuickSort<T>(ref T[] items, Func<T, T, int> comparer) => QuickSort(ref items, 0, items.Length - 1, comparer);
+
 [MethodImpl(MethodImplOptions.AggressiveInlining)]
 public static void QuickSort<T>(ref T[] items, int startIndex, int endIndex, Func<T, T, int> comparer) {
     if(items.Length < 2) return; 
