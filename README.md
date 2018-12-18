@@ -2,7 +2,7 @@
 
 
 ```csharp
-PointF[] Baseline = new PointF[]{
+PointF[] exampleArray = new PointF[]{
   new PointF(.0F, 5f),
   new PointF(.0F, 2f),
   new PointF(.0F, 4f),
@@ -10,7 +10,7 @@ PointF[] Baseline = new PointF[]{
   new PointF(.0F, 1f),
   new PointF(.0F, 3f),
 };
-Windows.QuickSort(ref pf, (start, end) => {
+Windows.QuickSort(ref exampleArray, (start, end) => {
   float val = end.Y - start.Y;
   return val != 0 ? val > 0 ? 1 : -1 : 0;
 });
