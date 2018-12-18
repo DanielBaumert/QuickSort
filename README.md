@@ -1,6 +1,6 @@
 # QuickSort for C#  as example
 
-
+## Using
 ```csharp
 PointF[] exampleArray = new PointF[]{
   new PointF(.0F, 5f),
