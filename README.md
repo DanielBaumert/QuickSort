@@ -1,1 +1,1 @@
-# Qick---Sort
+# QickSort
