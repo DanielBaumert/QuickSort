@@ -1,1 +1,1 @@
-# QickSort
+# QuickSort for C#  as example
