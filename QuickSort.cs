@@ -31,7 +31,8 @@ namespace System.Collections {
         public enum CompareResult
         {
             Equal = 0, 
-            Diffrent = 1
+            Lower = -1,
+            Upper = 1
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)] 
