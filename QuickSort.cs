@@ -28,53 +28,72 @@ using System.Runtime.CompilerServices;
 namespace System.Collections {
 
     public static class Windows {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void QuickSort<T>(ref T[] items, Func<T, T, int> comparer) => QuickSort(ref items, 0, items.Length - 1, comparer);
+        public enum CompareResult
+        {
+            Equal = 0, 
+            Diffrent = 1
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
+        public static void QuickSort<T>(this T[] items, Func<T, T, CompareResult> comparer) where T : unmanaged =>  items.QuickSort(0, items.Length - 1, comparer);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void QuickSort<T>(ref T[] items, int startIndex, int endIndex, Func<T, T, int> comparer) {
+        public unsafe static void QuickSort<T>(this T[] items, int startIndex, int endIndex, Func<T, T, CompareResult> comparer) where T : unmanaged
+        {
             if (items.Length < 2) return;
             Stack<int> bounds = new Stack<int>();
-            do {
-                if (bounds.Count != 0) {
-                    endIndex = bounds.Pop();
-                    startIndex = bounds.Pop();
-                }
+            fixed (T* tPtr = items)
+            {
+                do
+                {
+                    if (bounds.Count != 0)
+                    {
+                        endIndex = bounds.Pop();
+                        startIndex = bounds.Pop();
+                    }
 
-                T pivot = items[startIndex];
-                int pivotIndex = startIndex;
+                    T pivot = *(tPtr + startIndex);
+                    int pivotIndex = startIndex;
 
-                for (int i = startIndex + 1; i <= endIndex; i++) {
-                    if (comparer(pivot, items[i]) > 0) {
-                        pivotIndex++;
-                        if (pivotIndex != i) {
-                            Swap(ref items, pivotIndex, i);
+                    for (int i = startIndex + 1; i <= endIndex; i++)
+                    {
+                        if (comparer(pivot, *(tPtr + i)) > 0)
+                        {
+                            pivotIndex++;
+                            if (pivotIndex != i)
+                            {
+                                Swap(tPtr, pivotIndex, i);
+                            }
                         }
                     }
-                }
 
-                if (startIndex != pivotIndex) {
-                    Swap(ref items, startIndex, pivotIndex);
-                }
+                    if (startIndex != pivotIndex)
+                    {
+                        Swap(tPtr, startIndex, pivotIndex);
+                    }
 
-                if (pivotIndex + 1 < endIndex) {
-                    bounds.Push(pivotIndex + 1);
-                    bounds.Push(endIndex);
-                }
+                    if (pivotIndex + 1 < endIndex)
+                    {
+                        bounds.Push(pivotIndex + 1);
+                        bounds.Push(endIndex);
+                    }
 
-                if (startIndex < pivotIndex - 1) {
-                    bounds.Push(startIndex);
-                    bounds.Push(pivotIndex - 1);
-                }
+                    if (startIndex < pivotIndex - 1)
+                    {
+                        bounds.Push(startIndex);
+                        bounds.Push(pivotIndex - 1);
+                    }
 
-            } while (bounds.Count != 0);
+                } while (bounds.Count != 0);
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void Swap<T>(ref T[] items, int i, int j) {
-            T temp = items[i];
-            items[i] = items[j];
-            items[j] = temp;
+        private unsafe static void Swap<T>(T* tPtr, int i, int j) where T : unmanaged
+        {
+            T temp = *(tPtr + i);
+            *(tPtr + i) = *(tPtr + j);
+            *(tPtr + j) = temp;
         }
     }
 }
